@@ -1,10 +1,102 @@
-
+<button class="btn btn-outline-primary mb-2 me-2" (click)="create(content)">Craete User</button>&nbsp;
+<button class="btn btn-outline-primary mb-2 me-2" (click)="create(content2)">Craete Transaction customerID/initialCredit</button>
+<br>
 <ag-grid-angular
    style="width: 100%; height: 500px;"
    class="ag-theme-alpine"
    [columnDefs]="columnDefs"
    [rowData]="rowData"
    [rowSelection]="'multiple'"
+   (rowEditingStopped)="onRowEditingStopped($event)"
+   (rowEditingStarted)="onRowEditingStarted($event)"
+   (cellClicked)="onCellClicked($event)"
+   editType="fullRow"
    (gridReady)="onGridReady($event)"
    (cellClicked)="onCellClicked($event)"
  ></ag-grid-angular>
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create User</h4>
+      <button id="closeButton"  type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+      <form #From="ngForm" (ngSubmit)="formSubmit(From.value)"> 
+          <div class="modal-body">
+              <div class="form-group">
+                  <label for="exampleInputEmail1">Name</label>
+                  <input type="text" name="Name" class="form-control" placeholder="Name" ngModel required>
+              </div>
+              <div class="form-group">
+                  <label for="exampleInputEmail1">Surname</label>
+                  <input type="text" name="Surname" class="form-control" placeholder="Surname" ngModel required>
+              </div>
+  
+                  <br/> 
+                  <br/> 
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-outline-dark">Save</button>
+          </div>
+       </form>
+  </ng-template>
+  
+<ng-template #content2 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create Craete Transaction customerID/initialCredit</h4>
+      <button id="closeButton"  type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+      <form #From="ngForm" (ngSubmit)="formSubmitInitialCredit(From.value)"> 
+          <div class="modal-body">
+              <div class="form-group">
+                  <label for="exampleInputEmail1">CustomerID</label>
+                  <input type="text" name="customerID" class="form-control" placeholder="customerID" ngModel required>
+              </div>
+              <div class="form-group">
+                  <label for="exampleInputEmail1">initialCredit</label>
+                  <input type="text" name="initialCredit" class="form-control" placeholder="initialCredit" ngModel required>
+              </div>
+  
+                  <br/> 
+                  <br/> 
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-outline-dark">Save</button>
+          </div>
+       </form>
+  </ng-template>
+
+
+
+
+  
+<ng-template #transaction let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Create Craete Transaction customerID/initialCredit</h4>
+        <button id="closeButton"  type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <br>
+   
+      <div class="modal-body">
+        <ag-grid-angular
+        style="width: 100%; height: 500px;"
+        class="ag-theme-alpine"
+        [columnDefs]="columnDefsTransaction"
+        [rowData]="rowDataTransaction"
+        [rowSelection]="'multiple'"
+        (gridReady)="onGridReadyTransaction($event)"
+        (cellClicked)="onCellClickedTransaction($event)"
+        ></ag-grid-angular>
+    </div>
+    <div class="modal-footer">
+    </div>
+    <br> 
+
+</ng-template>
+  

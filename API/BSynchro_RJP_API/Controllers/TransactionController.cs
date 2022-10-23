@@ -27,6 +27,12 @@ namespace BSynchro_RJP_API.Controllers
         {
             return Ok(_context.Transaction.ToList());
         }
+        [HttpGet]
+        [Route("GetTransactionByUserId")]
+        public IActionResult GetTransactionByUserId(int? userId)
+        {
+            return Ok(_context.Transaction.Where(x => x.Id == userId).ToList());
+        }
         [HttpPost]
         [Route("Create")]
         public IActionResult Create(Transaction transaction)

@@ -1,5 +1,6 @@
 ﻿using BSynchro_RJP_API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace BSynchro_RJP_API.Controllers
@@ -26,6 +27,13 @@ namespace BSynchro_RJP_API.Controllers
         public IActionResult Get()
         {
             return Ok(_context.User.ToList());
+        }
+
+        [HttpGet]
+        [Route("GetUsersWithTransactions")]
+        public IActionResult GetUsersWithTransactions()
+        {
+            return Ok(_context.User.Include("Transaction").ToList());
         }
         [HttpPost]
         [Route("Create")]

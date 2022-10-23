@@ -18,10 +18,12 @@ export class TransactionComponent implements OnInit {
     
  
   columnDefs = [
-    { field: 'userId' },
-    { field: 'amount' },
-    { field: 'dateCreated'},
-    { field: 'dateUpdated'},
+    { field: 'userId', sortable: true, filter: true, resizable: true,editable: true },
+    { field: 'amount', sortable: true, filter: true, resizable: true,editable: true },
+    { field: 'dateCreated', sortable: true, filter: true, resizable: true,editable: false
+    ,cellRenderer: (data:any) => {return data.value ? (new Date(data.value)).toLocaleDateString() : '';}},
+    { field: 'dateUpdated', sortable: true, filter: true, resizable: true,editable: false
+    ,cellRenderer: (data:any) => {return data.value ? (new Date(data.value)).toLocaleDateString() : '';}},
   ];
 
   rowData = [

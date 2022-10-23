@@ -9,6 +9,9 @@ import {HttpClientModule} from '@angular/common/http'
 import {HttpClient} from '@angular/common/http'
 import { AgGridModule } from 'ag-grid-angular';
 import { HttpModule } from '@angular/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule }   from '@angular/forms';
+
 
 
 @NgModule({
@@ -21,7 +24,9 @@ import { HttpModule } from '@angular/http';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AgGridModule
+    AgGridModule,
+    NgbModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
