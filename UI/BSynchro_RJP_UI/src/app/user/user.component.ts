@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgGridAngular } from 'ag-grid-angular';
-import { CellClickedEvent, CellValueChangedEvent, ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import { CellClickedEvent, CellValueChangedEvent, ColDef, GetRowIdFunc, GetRowIdParams, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { Observable } from 'rxjs';
 import { ApiService } from '../shared/ApiService';
 import { helper, user } from './model';
@@ -18,7 +18,6 @@ export class UserComponent implements OnInit {
   private gridTransactionApi!: GridApi;
 
   ngOnInit(): void {    
-    this.rowData  = [];
   }
     
  
@@ -81,7 +80,7 @@ export class UserComponent implements OnInit {
        });
      } 
      if (action === "delete") {
-       this.delteModel();
+       this.deleteModel();
      } 
      if (action === "update") {     
        this.cancelUpdate = false; 
@@ -92,7 +91,7 @@ export class UserComponent implements OnInit {
        params.api.stopEditing(true);
      }
      if (action === "transaction") {
-      this.OpenTransation(this.transaction);  
+      this.gteDataTransaction();
      }
    }
  }
@@ -115,9 +114,10 @@ export class UserComponent implements OnInit {
    if(this.cancelUpdate == false)
    this.onCellValueChanged(params.node);
  }
-  rowData = [
-      { name: '', surname: '', balance: '', dateCreated:'', dateUpdated:'' }
-  ];
+ public getRowId: GetRowIdFunc = (params: GetRowIdParams) => params.data.id;
+ public getRowIdTransaction: GetRowIdFunc = (params: GetRowIdParams) => params.data.id;
+ rowData = [];
+ rowDataTransaction = [];
 
   constructor(public apiService: ApiService,private modalService: NgbModal) {   
     this.getData();
@@ -142,10 +142,10 @@ export class UserComponent implements OnInit {
   
   formSubmit(result:any) {
     this.closeForm();
+    debugger;
     var userModel = new user();
-    userModel.Name = result.name;
-    userModel.Surname = result.surname;
-    userModel.Balance = result.balance;
+    userModel.Name = result.Name;
+    userModel.Surname = result.Surname;
     let params: HttpParams = new HttpParams();
     this.apiService.post<any[]>("/User/Create", params, userModel).subscribe(s => {
       this.getData();  
@@ -155,8 +155,8 @@ export class UserComponent implements OnInit {
     this.closeForm();
     var userModel = new user();
     var helperModel = new helper();
-    helperModel.CustomerID = result.customerID;
-    helperModel.InitialCredit = result.initialCredit;
+    helperModel.CustomerID = result.CustomerID;
+    helperModel.InitialCredit = result.InitialCredit;
     let params: HttpParams = new HttpParams()
     .set('customerID',result.customerID)
     .set('initialCredit',result.initialCredit);;
@@ -176,16 +176,12 @@ export class UserComponent implements OnInit {
     this.getData(); 
   });
 }
-delteModel(){  
+deleteModel(){  
   var selectedRows = this.gridApi.getSelectedRows();
-  var countries = new Array<user>();
-  selectedRows.forEach(function (selectedRow, index) {
-    var newCountry = new user();
-    newCountry.Id = selectedRow.id;
-    countries.push(newCountry);
-  });    
+  var userModel = new user();
+  userModel.Id = selectedRows[0].id;
   let params: HttpParams = new HttpParams();
-  this.apiService.post<any[]>("/User/Delete", params, countries).subscribe(s => {
+  this.apiService.post<any[]>("/User/Delete", params, userModel).subscribe(s => {
     this.closeForm();
     this.getData();
   });
@@ -210,11 +206,8 @@ delteModel(){
   ,cellRenderer: (data:any) => {return data.value ? (new Date(data.value)).toLocaleDateString() : '';}},
 ];
 
-rowDataTransaction = [
-    { userId: '', amount: '', dateCreated: '',  dateUpdated:''}
-];
-
 gteDataTransaction() {     
+  this.OpenTransation(this.transaction);  
   selectedRows= [];
   var selectedRows = this.gridApi.getSelectedRows();
   let params: HttpParams = new HttpParams()

@@ -67,7 +67,10 @@ namespace BSynchro_RJP_API.Controllers
                         _context.Transaction.Add(transaction);
                         _context.SaveChanges();
                     }
-                    currentUser.Balance += initialCredit;
+                    if (currentUser.Balance == null)
+                        currentUser.Balance = initialCredit;
+                    else
+                        currentUser.Balance += initialCredit;
                     _context.SaveChanges();
                 }
                 else

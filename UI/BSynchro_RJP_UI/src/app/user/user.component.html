@@ -11,7 +11,8 @@
    (rowEditingStarted)="onRowEditingStarted($event)"
    (cellClicked)="onCellClicked($event)"
    editType="fullRow"
-   (gridReady)="onGridReady($event)"
+    (gridReady)="onGridReady($event)"
+    [getRowId]="getRowId"
    (cellClicked)="onCellClicked($event)"
  ></ag-grid-angular>
 
@@ -90,6 +91,7 @@
         [columnDefs]="columnDefsTransaction"
         [rowData]="rowDataTransaction"
         [rowSelection]="'multiple'"
+        [getRowId]="getRowIdTransaction"
         (gridReady)="onGridReadyTransaction($event)"
         (cellClicked)="onCellClickedTransaction($event)"
         ></ag-grid-angular>
