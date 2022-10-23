@@ -1,6 +1,7 @@
 ﻿using BSynchro_RJP_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BSynchro_RJP_API.Controllers
@@ -33,7 +34,20 @@ namespace BSynchro_RJP_API.Controllers
         [Route("GetUsersWithTransactions")]
         public IActionResult GetUsersWithTransactions()
         {
-            return Ok(_context.User.Include("Transaction").ToList());
+            var list = _context.User.ToList().Select(y => new User()
+            {
+                Name = y.Name,
+                Surname = y.Surname,
+                Balance = y.Balance,
+                Transaction = _context.Transaction.Where(x => x.UserId == y.Id).Select(y => new Transaction()
+                {
+                    Id = y.Id, 
+                    Amount = y.Amount,
+                    DateCreated = y.DateCreated,
+                    DateUpdated = y.DateUpdated
+                }).ToList()
+            }).ToList();
+            return Ok(list);
         }
         [HttpPost]
         [Route("Create")]
